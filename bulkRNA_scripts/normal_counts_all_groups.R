@@ -10,6 +10,8 @@ normed <- normed %>%
 gene_names <- as.character(mapIds(org.Hs.eg.db, keys=normed$X, keytype="ENSEMBL", columns="SYMBOL",column="SYMBOL"))
 normed$SYMBOL <- gene_names
 
+write.csv(x = normed, file = "norm_counts_id.csv")
+
 names_to_include <- c("ENSG00000150938", "ENSG00000120306", "ENSG00000164935", "ENSG00000185070",
                       "ENSG00000110697", "ENSG00000149489", "ENSG00000218336",
                       "ENSG00000088726", "ENSG00000126106", "ENSG00000131634", "ENSG00000134825",
@@ -37,7 +39,6 @@ genedesc <- genedesc%>%
   dplyr::rename(SYMBOL = external_gene_name)
 
 design <- as_tibble(read.csv("design.csv"))
-
 
 merged_df3 <- merge(df3, genedesc, by = 'SYMBOL', all = TRUE)
 

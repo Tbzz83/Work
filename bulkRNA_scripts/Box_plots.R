@@ -3,12 +3,16 @@ library(tidyverse)
 
 design <- read.csv("design.csv")
 
-df <- read.csv("counts_with_id_and_description.csv")
+df <- read.csv("norm_counts_id.csv")%>%
+  mutate(RowMean = rowMeans(dplyr::select(., -c(X, SYMBOL)), na.rm = TRUE))%>%
+  dplyr::select(-X.1)
 
-df <- df[order(desc(df$baseMeanB)),]
+
+df <- df %>%
+  arrange(desc(RowMean))
 
 # Choosing top 5 highest expressed genes
-symbols_to_filter <- head(df$SYMBOL, 5)
+symbols_to_filter <- head(df$SYMBOL, 10)
 
 
 df <- df%>%
